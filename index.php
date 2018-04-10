@@ -54,10 +54,12 @@ require_once './classes/DbClass.php';
 //                            }
                             foreach ($rows[0] as $row) {
                               echo $row . "<br>";
-                            }
-                            echo "<br><br>";
-                            echo $db->deleteById(24, 'id');                            
+                            }                            
+                            $db->deleteById(24, 'id');                            
                             $db->insert($data);
+                            $db->update($data, 10);//WHERE id=10
+                            //$db->update($data, 'Magdeburg', 'city');//WHERE city='Magdeburg'
+                            
                             ?>
                         </p>                         
                     </div>

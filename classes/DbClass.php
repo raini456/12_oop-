@@ -50,13 +50,27 @@ class DbClass extends PDO {
       $rows = implode(",", $cols);
       $placeholders = implode(",", $placeholder);
       $query = "INSERT INTO $this->tablename($rows) VALUES($placeholders);";
-      echo $query;
       $stmt = $this->prepare($query);
       foreach ($data as $value) {
-        echo $value;
-        $stmt->bindValue( ++$j, $value);
+        $stmt->bindValue(++$j, $value);
       }
       return $stmt->execute();
+    }
+  }
+
+  public function update($data, $val = "", $colName = "id") {
+    $i = 0;
+    $rowNumber = count($data);
+    $stmt;
+    if (is_array($data) && $data != NULL) {
+      $query = "UPDATE $this->tablename SET(?=?) WHERE $colName='$val';";
+      echo "<br>" . $query . "<br><br>";
+      foreach ($data as $key => $value) {        
+        $stmt->bindValue( ++$i, $key);
+        $stmt->bindValue( ++$i, $value);
+        $stmt->execute();
+      }
+      return "It works";
     }
   }
 
