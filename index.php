@@ -20,38 +20,63 @@ require_once './classes/DbClass.php';
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-6 bg-warning">
                         <p> 
-                      <?php
-                          $db=new DbClass('mysql:host=' . HOST . ';dbname=' . DB, USER, PASSWORD);
-                          $db->setTable('tb_cities');
-                          //$db->deleteById(5);
-                          $rows=$db->getAllData();                            
-                          foreach($rows[0] as $row){
-                            echo $row."<br>";
-                          }
-                          echo "<br><br>";
-                          echo $db->deleteById(24, 'id');                   
-                        ?>
+                            <?php
+                            $data=[];
+                            $errorCodes = [];
+                            $errorCode[1049] = [];
+                            $errorCode[1049]['de'] = "Datenbank unbekannt";
+                            $errorCode[1049]['en'] = "Datenbank unknown";
+                            $errorCode['42S02']['de']="Keine Daten zurückgeliefert";
+                            $errorCode['42S02']['en']="No datas in return";
+                            $data['city']='Magdeburg';
+                            $data['province']='Sachsen-Anhalt';
+                            $data['iso2']='DE';
+                            
+                            try {
+//                           $dbh = new PDO($dsn, $user, $password);
+//                           $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                              $db = new DbClass('mysql:host=' . HOST . ';dbname=' . DB, USER, PASSWORD); //, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+                              $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                            } catch (PDOException $e) {
+                              $e->$errorCodes[getCode()['en']];
+                            }
+                            $db->setTable('tb_cities');
+                            //$db->deleteById(5);
+                            try {
+                              $rows = $db->getAllData();
+                              //throw new Exception("Leider keine Daten gefunden");
+                            }
+                            catch(PDOException $e){
+                              $e->getCode();
+                            }
+//                            } catch (Exception $ex) {
+//                              echo $ex->getCode();
+//                            }
+                            foreach ($rows[0] as $row) {
+                              echo $row . "<br>";
+                            }
+                            echo "<br><br>";
+                            echo $db->deleteById(24, 'id');                            
+                            $db->insert($data);
+                            ?>
                         </p>                         
                     </div>
                     <!--div class="col-12 col-sm-12 col-md-6 bg-success">
                         <p> 
-                      <?php
-                        
-                        ?> 
+                    <?php
+                    ?> 
                         </p>                        
                     </div>
                     <div class="col-12 col-sm-12 col-md-6 bg-warning">
                         <p> 
-                      <?php
-                        
-                        ?>
+                    <?php
+                    ?>
                         </p>                         
                     </div>
                     <div class="col-12 col-sm-12 col-md-6 bg-success">
                         <p> 
-                      <?php
-                          
-                        ?> 
+                    <?php
+                    ?> 
                         </p>                        
                     </div-->
                 </div>
