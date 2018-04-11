@@ -30,10 +30,6 @@ class DbClass extends PDO {
     } catch (Exception $e) {
       echo "<b style='color:red'>ERROR: DeleteById() " . $e->getCode() . "<b>";
     }
-//    $query="SELECT * FROM $this->tablename WHERE id=$id";
-//    $getData=$this->query($query);
-//    $returnData=[];
-//    $returnData=$getData->fetchAll(PDO::FETCH_BOTH);
   }
 
   public function insert($data) {
@@ -57,21 +53,39 @@ class DbClass extends PDO {
       return $stmt->execute();
     }
   }
-
-  public function update($data, $val = "", $colName = "id") {
-    $i = 0;
-    $rowNumber = count($data);
-    $stmt;
-    if (is_array($data) && $data != NULL) {
-      $query = "UPDATE $this->tablename SET(?=?) WHERE $colName='$val';";
-      echo "<br>" . $query . "<br><br>";
-      foreach ($data as $key => $value) {        
-        $stmt->bindValue( ++$i, $key);
-        $stmt->bindValue( ++$i, $value);
-        $stmt->execute();
-      }
-      return "It works";
-    }
+public function update($data, $valWhere, $colWhere = 'id') {
+  $i = 0;
+  $sets = [];
+  
+  foreach ($data as $col => $value) {
+   $sets[] = "$col=?";
   }
+  
+  $query = sprintf("UPDATE %s SET %s WHERE %s='%s'", 
+          $this->tablename, implode(',', $sets), $colWhere, $valWhere);
+  $st = $this->prepare($query);
+  
+  foreach ($data as $value) {
+   $st->bindValue(++$i, $value);
+  }
+   
+  $st->execute();
+ }
 
+//  public function update($data, $val = "", $colName = "id") {
+//    $i = 0;
+//    $rowNumber = count($data);
+//    $stmt;
+//    if (is_array($data) && $data!=NULL) {
+//      $query = "UPDATE $this->tablename SET(?=?) WHERE $colName='$val';";
+//      echo "<br>" . $query . "<br><br>";
+//      foreach ($data as $key => $value) {     
+//        echo $key."<br>".$value."<br>";
+////        $stmt->bindValue( ++$i, $key);
+////        $stmt->bindValue( ++$i, $value);
+////        $stmt->execute();
+//      }
+//      return "It works";
+//    }
+//  }
 }

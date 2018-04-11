@@ -1,6 +1,19 @@
 <?php
 require_once './config.php';
 require_once './classes/DbClass.php';
+
+try {
+  $db = new DbClass('mysql:host=' . HOST . ';dbname=' . DB, USER, PASSWORD); //, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+  $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+  $e->$errorCodes[getCode()[$language]];
+}
+$db->setTable('tb_cities');
+//filter_input
+/**
+ * 
+ * 
+ * */
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,32 +34,24 @@ require_once './classes/DbClass.php';
                     <div class="col-12 col-sm-12 col-md-6 bg-warning">
                         <p> 
                             <?php
-                            $data=[];
+                            $data = [];
                             $errorCodes = [];
                             $errorCode[1049] = [];
                             $errorCode[1049]['de'] = "Datenbank unbekannt";
                             $errorCode[1049]['en'] = "Datenbank unknown";
-                            $errorCode['42S02']['de']="Keine Daten zurückgeliefert";
-                            $errorCode['42S02']['en']="No datas in return";
-                            $data['city']='Magdeburg';
-                            $data['province']='Sachsen-Anhalt';
-                            $data['iso2']='DE';
-                            
-                            try {
-//                           $dbh = new PDO($dsn, $user, $password);
-//                           $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                              $db = new DbClass('mysql:host=' . HOST . ';dbname=' . DB, USER, PASSWORD); //, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-                              $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                            } catch (PDOException $e) {
-                              $e->$errorCodes[getCode()['en']];
-                            }
-                            $db->setTable('tb_cities');
+                            $errorCode['42S02']['de'] = "Keine Daten zurückgeliefert";
+                            $errorCode['42S02']['en'] = "No datas in return";
+                            $data['city'] = 'Magdeburg';
+                            $data['province'] = 'Sachsen-Anhalt';
+                            $data['iso2'] = 'DE';
+                            $language = "en";
+
+
                             //$db->deleteById(5);
                             try {
                               $rows = $db->getAllData();
                               //throw new Exception("Leider keine Daten gefunden");
-                            }
-                            catch(PDOException $e){
+                            } catch (PDOException $e) {
                               $e->getCode();
                             }
 //                            } catch (Exception $ex) {
@@ -54,34 +59,41 @@ require_once './classes/DbClass.php';
 //                            }
                             foreach ($rows[0] as $row) {
                               echo $row . "<br>";
-                            }                            
-                            $db->deleteById(24, 'id');                            
+                            }
+                            $db->deleteById(24, 'id');
                             $db->insert($data);
-                            $db->update($data, 10);//WHERE id=10
+                            echo $db->update($data, 10); //WHERE id=10
                             //$db->update($data, 'Magdeburg', 'city');//WHERE city='Magdeburg'
-                            
                             ?>
                         </p>                         
                     </div>
-                    <!--div class="col-12 col-sm-12 col-md-6 bg-success">
-                        <p> 
-                    <?php
-                    ?> 
-                        </p>                        
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-6 bg-warning">
-                        <p> 
-                    <?php
-                    ?>
-                        </p>                         
+                    <div class="col-12 col-sm-12 col-md-6 bg-success">
+                        <h1>Eingabe Citys</h1>
+                        <hr>
+                        <form method="post">
+                            <div class="form-group">
+                                <label for="field_city">City</label>
+                                <input value="Bansin" type="text" class="form-control" id="field_city" name="field_city">                                
+                            </div>
+                            <div class="form-group">
+                                <label for="field_city_ascii">City ASCII Code</label>
+                                <input value="Bansin" type="text" class="form-control" id="field_city_ascii" name="field_city_ascii">                                
+                            </div>
+                            <div class="form-group">
+                                <label for="field_city_province">Province</label>
+                                <input  value="Vorpommern" type="text" class="form-control" id="field_city_province" name="field_province">                                
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary">Senden</button>
+                            </div>
+                        </form>                        
                     </div>
                     <div class="col-12 col-sm-12 col-md-6 bg-success">
                         <p> 
-                    <?php
-                    ?> 
+                            <?php ?> 
                         </p>                        
-                    </div-->
-                </div>
+                        </div-->
+                    </div>
             </fieldset>
 
         </div>
