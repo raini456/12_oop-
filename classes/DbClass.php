@@ -71,7 +71,9 @@ public function update($data, $valWhere, $colWhere = 'id') {
    
   $st->execute();
  }
-
+public function checkData(array $data){
+  //var_dump($data);  
+}
 //  public function update($data, $val = "", $colName = "id") {
 //    $i = 0;
 //    $rowNumber = count($data);
