@@ -1,6 +1,7 @@
 <?php
 require_once './config.php';
 require_once './classes/DbClass.php';
+require_once './classes/FilterForm.php';
 //$field_city=filter_input(0, 'field_city', FILTER_SANITIZE_STRING);
 //$field_city_ascii=filter_input(0, 'field_city_ascii', FILTER_SANITIZE_STRING);
 //$field_province=filter_input(0, 'field_province', FILTER_SANITIZE_STRING);
@@ -22,40 +23,38 @@ $db->setTable('tb_cities');
  * 
  
  * */
-$scheme=[
-    [
-        'fieldname'=>'field_city',
-        'columnname'=>'city',
-        'filter'=>FILTER_SANITIZE_STRING
-    ],
-    [
-        'fieldname'=>'field_city_ascii',
-        'columnname'=>'city_ascii',
-        'filter'=>513
-    ],
-    [
-        'fieldname'=>'field_province',
-        'columnname'=>'province',
-        'filter'=>513
-    ],
-    [                 
-        'fieldname'=>'field_population',
-        'columnname'=>'pop',
-        'filter'=>FILTER_VALIDATE_INT
-    ]
-];
-function filterForm($scheme){
-  $data=[];  
-  foreach($scheme as $field){
-    var_dump($field);
-    echo "<br><br>";
-    $val= filter_input(0, $field['fieldname'], $field['filter']);
-    //if($field['required']===true)
-    $data[$field['columnname']]=$val;      
-  }
-  //var_dump($data);
-  return $data;
-}
+//$scheme=[
+//    [
+//        'fieldname'=>'field_city',
+//        'columnname'=>'city',
+//        'filter'=>FILTER_SANITIZE_STRING
+//    ],
+//    [
+//        'fieldname'=>'field_city_ascii',
+//        'columnname'=>'city_ascii',
+//        'filter'=>513
+//    ],
+//    [
+//        'fieldname'=>'field_province',
+//        'columnname'=>'province',
+//        'filter'=>513
+//    ],
+//    [                 
+//        'fieldname'=>'field_population',
+//        'columnname'=>'pop',
+//        'filter'=>FILTER_VALIDATE_INT
+//    ]
+//];
+//function filterForm($scheme){
+//  $data=[];  
+//  foreach($scheme as $field){        
+//    $val= filter_input(0, $field['fieldname'], $field['filter']);
+//    //if($field['required']===true)
+//    $data[$field['columnname']]=$val;      
+//  }
+//  //var_dump($data);
+//  return $data;
+//}
 
 
 
@@ -73,7 +72,7 @@ function filterForm($scheme){
         <script src="assets/js/main.js" type="text/javascript"></script>
     </head>
     <body>
-        <div class="container-fluid">
+        <div class="container">
             <fieldset>
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-6 bg-warning">
@@ -90,9 +89,7 @@ function filterForm($scheme){
                             $data['province'] = 'Sachsen-Anhalt';
                             $data['iso2'] = 'DE';
                             $language = "en";
-                            $data= filterForm($scheme);
-                            //var_dump($data);
-
+                            //$data= filterForm($scheme);
                             //$db->deleteById(5);
                             try {
                               $rows = $db->getAllData();
@@ -103,15 +100,20 @@ function filterForm($scheme){
 //                            } catch (Exception $ex) {
 //                              echo $ex->getCode();
 //                            }
-                            foreach ($rows[0] as $row) {
-                              echo $row . "<br>";
-                            }
+//                            foreach ($rows[0] as $row) {
+//                              echo $row . "<br>";
+//                            }
                             $db->deleteById(24, 'id');
                             //$db->insert($data);
                             //$db->update($data, 10); //WHERE id=10
                             //$db->update($data, 'Magdeburg', 'city');//WHERE city='Magdeburg'
-                            
-                            
+                            $f=new FilterForm();
+                            $f->setFilter('field_city_ascii', 513, 'city_ascii');
+                            $f->setFilter('field_city', 513, 'city');
+                            $f->setFilter('field_populaton', FILTER_VALIDATE_INT, 'pop');
+                            $s=$f->getScheme();
+                            var_dump($s);
+                            $data=$f->filter(1);
                             ?>
                         </p>                         
                     </div>
@@ -139,13 +141,7 @@ function filterForm($scheme){
                                 <button class="btn btn-primary">Senden</button>
                             </div>
                         </form>                        
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-6 bg-success">
-                        <p> 
-                            <?php ?> 
-                        </p>                        
-                        </div-->
-                    </div>
+                    </div>                    
             </fieldset>
 
         </div>
