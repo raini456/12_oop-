@@ -23,38 +23,38 @@ $db->setTable('tb_cities');
  * 
  
  * */
-$scheme=[
-    [
-        'fieldname'=>'field_city',
-        'columnname'=>'city',
-        'filter'=>FILTER_SANITIZE_STRING
-    ],
-    [
-        'fieldname'=>'field_city_ascii',
-        'columnname'=>'city_ascii',
-        'filter'=>513
-    ],
-    [
-        'fieldname'=>'field_province',
-        'columnname'=>'province',
-        'filter'=>513
-    ],
-    [                 
-        'fieldname'=>'field_population',
-        'columnname'=>'pop',
-        'filter'=>FILTER_VALIDATE_INT
-    ]
-];
-function filterForm($scheme){
-  $data=[];  
-  foreach($scheme as $field){        
-    $val= filter_input(0, $field['fieldname'], $field['filter']);
-    //if($field['required']===true)
-    $data[$field['columnname']]=$val;      
-  }
-  //var_dump($data);
-  return $data;
-}
+//$scheme=[
+//    [
+//        'fieldname'=>'field_city',
+//        'columnname'=>'city',
+//        'filter'=>FILTER_SANITIZE_STRING
+//    ],
+//    [
+//        'fieldname'=>'field_city_ascii',
+//        'columnname'=>'city_ascii',
+//        'filter'=>513
+//    ],
+//    [
+//        'fieldname'=>'field_province',
+//        'columnname'=>'province',
+//        'filter'=>513
+//    ],
+//    [                 
+//        'fieldname'=>'field_population',
+//        'columnname'=>'pop',
+//        'filter'=>FILTER_VALIDATE_INT
+//    ]
+//];
+//function filterForm($scheme){
+//  $data=[];  
+//  foreach($scheme as $field){        
+//    $val= filter_input(0, $field['fieldname'], $field['filter']);
+//    //if($field['required']===true)
+//    $data[$field['columnname']]=$val;      
+//  }
+//  //var_dump($data);
+//  return $data;
+//}
 
 
 
@@ -89,7 +89,7 @@ function filterForm($scheme){
                             $data['province'] = 'Sachsen-Anhalt';
                             $data['iso2'] = 'DE';
                             $language = "en";
-                            $data= filterForm($scheme);
+                            //$data= filterForm($scheme);
                             //$db->deleteById(5);
                             try {
                               $rows = $db->getAllData();
