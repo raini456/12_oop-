@@ -21,14 +21,14 @@ class DbClass extends PDO {
     }
   }
 
-  public function deleteById(int $id, $colname = 'id') {
-    $query = "DELETE FROM $this->tablename WHERE $colname=:id";
+  public function delete($value, $colname = 'id') {
+    $query = "DELETE FROM $this->tablename WHERE $colname=:value";
     try {
       $stmt = $this->prepare($query);
-      $stmt->bindValue(':id', $id, self::PARAM_INT);
+      $stmt->bindValue(':value', $value);
       return $stmt->execute();
     } catch (Exception $e) {
-      echo "<b style='color:red'>ERROR: DeleteById() " . $e->getCode() . "<b>";
+      echo "<b style='color:red'>ERROR: Delete() " . $e->getCode() . "<b>";
     }
   }
 

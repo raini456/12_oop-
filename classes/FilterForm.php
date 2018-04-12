@@ -4,8 +4,7 @@ class FilterForm {
 
   private $scheme = [];
 
-  public function __construct() {
-    
+  public function __construct() {    
   }
 
   public function setFilter(string $field, int $filter, $column = false) {

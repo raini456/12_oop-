@@ -13,7 +13,10 @@ try {
 } catch (PDOException $e) {
   $e->$errorCodes[getCode()[$language]];
 }
+
 $db->setTable('tb_cities');
+$db->delete('Bansin','city');
+$db->delete(7323)
 //filter_input
 
 /**function 
@@ -90,7 +93,7 @@ $db->setTable('tb_cities');
                             $data['iso2'] = 'DE';
                             $language = "en";
                             //$data= filterForm($scheme);
-                            //$db->deleteById(5);
+                            //$db->delete(5);
                             try {
                               $rows = $db->getAllData();
                               //throw new Exception("Leider keine Daten gefunden");
@@ -103,7 +106,7 @@ $db->setTable('tb_cities');
 //                            foreach ($rows[0] as $row) {
 //                              echo $row . "<br>";
 //                            }
-                            $db->deleteById(24, 'id');
+                            $db->delete(24, 'id');
                             //$db->insert($data);
                             //$db->update($data, 10); //WHERE id=10
                             //$db->update($data, 'Magdeburg', 'city');//WHERE city='Magdeburg'
@@ -114,6 +117,7 @@ $db->setTable('tb_cities');
                             $s=$f->getScheme();
                             var_dump($s);
                             $data=$f->filter(1);
+                            
                             ?>
                         </p>                         
                     </div>
